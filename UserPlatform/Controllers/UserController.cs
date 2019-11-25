@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 using UserPlatform.Models;
 
 namespace UserPlatform.Controllers
@@ -22,6 +18,10 @@ namespace UserPlatform.Controllers
             return View(_uM.GetUsers());
         }
 
+        public ActionResult Login()
+        {
+            return View();
+        }
 
         public ActionResult CreateUser()
         {
@@ -35,9 +35,34 @@ namespace UserPlatform.Controllers
             {
                 UserModel _uM = new UserModel();
 
-                _uM.CreateUser(user);
-                return RedirectToAction("Index", "Home");
-            } else
+                if (user.Password.Length < 8)
+                {
+                    if (user.Password.Length > 20)
+                    {
+                        ModelState.AddModelError("password", "Password too long! (Max 20 characters)");
+                        user.Password = string.Empty;
+                        return View(user);
+                    }
+                    else
+                    {
+                        ModelState.AddModelError("password", "Password too short! (Min 8 characters)");
+                        user.Password = string.Empty;
+                        return View(user);
+                    }
+                }
+
+                if (_uM.CreateUser(user))
+                {
+                    return RedirectToAction("ListUsers", "User");
+                }
+                else
+                {
+                    ModelState.AddModelError("username", "The username is already in use!");
+                    user.Password = string.Empty;
+                    return View(user);
+                }
+            }
+            else
             {
                 return View(user);
             }

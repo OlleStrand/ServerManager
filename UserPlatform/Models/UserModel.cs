@@ -9,9 +9,10 @@ namespace UserPlatform.Models
 {
     public class UserModel
     {
+        public int userID { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
 
         public string PhoneNumber { get; set; }
@@ -20,11 +21,17 @@ namespace UserPlatform.Models
 
         public List<UserModel> GetUsers() => new DBConnect("UserMySQL").GetAllUsers();
 
-        public void CreateUser(UserModel user)
+        public bool CreateUser(UserModel user)
         {
-            user.Password = HashPassword(user.Password);
+            DBConnect dB = new DBConnect("UserMySQL");
 
-            new DBConnect("UserMySQL").CreateUser(user);
+            if (dB.ValidUser(user))
+            {
+                user.Password = HashPassword(user.Password);
+                dB.CreateUser(user);
+                return true;
+            }
+            return false;
         }
 
         //https://stackoverflow.com/questions/4181198/how-to-hash-a-password/10402129#10402129

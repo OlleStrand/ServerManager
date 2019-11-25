@@ -89,7 +89,7 @@ namespace UserPlatform.Classes.Database
                     {
                         Name = dataReader["name"].ToString(),
                         Email = dataReader["email"].ToString(),
-                        UserName = dataReader["username"].ToString(),
+                        Username = dataReader["username"].ToString(),
                         Password = dataReader["password"].ToString(),
                         PhoneNumber = dataReader["phone_number"].ToString(),
                         AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
@@ -112,7 +112,7 @@ namespace UserPlatform.Classes.Database
         public void CreateUser(UserModel user)
         {
 
-            string query = $"INSERT INTO users (name, email, username, password, phone_number) VALUES('{user.Name}', '{user.Email}', '{user.UserName}', '{user.Password}', '{user.PhoneNumber}')";
+            string query = $"INSERT INTO users (name, email, username, password, phone_number) VALUES('{user.Name}', '{user.Email}', '{user.Username}', '{user.Password}', '{user.PhoneNumber}')";
 
             if (OpenConnection() == true)
             {
@@ -121,6 +121,29 @@ namespace UserPlatform.Classes.Database
                 cmd.ExecuteNonQuery();
 
                 CloseConnection();
+            }
+        }
+
+        public bool ValidUser(UserModel user)
+        {
+            string query = $"SELECT * FROM users WHERE username = '{user.Username}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    return false;
+                }
+                dataReader.Close();
+                CloseConnection();
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

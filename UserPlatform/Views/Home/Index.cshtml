@@ -13,16 +13,11 @@
         <p>
             To use the system you´ll have to setup some variables in the configuration file!
         </p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301865">How &raquo;</a></p>
+        <p>@Html.ActionLink(HttpUtility.HtmlDecode("How &raquo;"), "Index", "Setup", new { area = "" }, new { @class = "btn btn-default" })</p>
     </div>
     <div class="col-md-4">
         <h2>Add Users</h2>
         <p>This project focuses on helping you managing your community with a User System. Add them here!</p>
         <p>@Html.ActionLink(HttpUtility.HtmlDecode("User Page &raquo;"), "CreateUser", "User", new { area = "" }, new { @class = "btn btn-default" })</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Manage Users</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
 </div>
