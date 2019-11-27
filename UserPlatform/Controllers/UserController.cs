@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System;
+using System.Web.Mvc;
 using UserPlatform.Models;
 
 namespace UserPlatform.Controllers
@@ -6,52 +7,39 @@ namespace UserPlatform.Controllers
     public class UserController : Controller
     {
         // GET: User
-        public ActionResult Index()
+        public ActionResult Index() => View();
+        public ActionResult ListUsers() => View(new UserModel().GetUsers());
+
+        public ActionResult Edit(int Id) => View(new UserModel().GetUserById(Id));
+        [HttpPost]
+        public ActionResult Edit(UserModel user)
         {
-            return View();
+            user.UpdateUser();
+            
+            return RedirectToAction("ListUsers");
         }
 
-        public ActionResult ListUsers()
-        {
-            UserModel _uM = new UserModel();
-
-            return View(_uM.GetUsers());
-        }
-
-        public ActionResult Login()
-        {
-            return View();
-        }
-
-        public ActionResult CreateUser()
-        {
-            return View();
-        }
-
+        public ActionResult CreateUser() => View();
         [HttpPost]
         public ActionResult CreateUser(UserModel user)
         {
             if (ModelState.IsValid)
             {
-                UserModel _uM = new UserModel();
-
                 if (user.Password.Length < 8)
                 {
-                    if (user.Password.Length > 20)
-                    {
-                        ModelState.AddModelError("password", "Password too long! (Max 20 characters)");
-                        user.Password = string.Empty;
-                        return View(user);
-                    }
-                    else
-                    {
-                        ModelState.AddModelError("password", "Password too short! (Min 8 characters)");
-                        user.Password = string.Empty;
-                        return View(user);
-                    }
+                    ModelState.AddModelError("password", "Password too short! (Min 8 characters)");
+                    user.Password = string.Empty;
+                    return View(user);
                 }
 
-                if (_uM.CreateUser(user))
+                if (user.Password.Length > 20)
+                {
+                    ModelState.AddModelError("password", "Password too long! (Max 20 characters)");
+                    user.Password = string.Empty;
+                    return View(user);
+                }
+
+                if (user.CreateUser())
                 {
                     return RedirectToAction("ListUsers", "User");
                 }
@@ -67,5 +55,30 @@ namespace UserPlatform.Controllers
                 return View(user);
             }
         }
+
+        public ActionResult Login() => View();
+        [HttpPost]
+        public ActionResult Login(UserModel user)
+        {
+            if (user.Password == null || user.Username == null)
+            {
+                ModelState.AddModelError("noCredentials", "No Password or Username!");
+                return View(user);
+            }
+
+            if (user.Login())
+            {
+                user = user.GetUser();
+                Session["UserID"] = user.UserID;
+                return RedirectToAction("Dashboard");
+            }
+            else
+            {
+                ModelState.AddModelError("noCredentials", "Wrong Password or Username!");
+                return View(user);
+            }
+        }
+
+        public ActionResult Dashboard() => View(new UserModel().GetUserById(Convert.ToInt32(Session["UserID"])));
     }
 }

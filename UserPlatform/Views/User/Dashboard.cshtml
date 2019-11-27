@@ -1,0 +1,16 @@
+﻿@model UserPlatform.Models.UserModel
+
+@{
+    ViewBag.Title = "Dashboard";
+
+    if (Session["UserID"] == null)
+    {
+        Response.Redirect("~/Home/Index");
+    }
+}
+
+<h2>@Html.DisplayFor(model => model.Name) Dashboard</h2>
+
+<div>
+    @Html.ActionLink("Home", "Index", "Home")
+</div>

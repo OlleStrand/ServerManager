@@ -6,6 +6,7 @@ using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
 using UserPlatform.Models;
+using UserPlatform.Classes;
 using System.Globalization;
 
 namespace UserPlatform.Classes.Database
@@ -64,7 +65,6 @@ namespace UserPlatform.Classes.Database
 
         /*
          *  METHODS FOR GETTING DATA
-         *
          */
 
         public List<UserModel> GetAllUsers()
@@ -87,6 +87,7 @@ namespace UserPlatform.Classes.Database
 
                     UserModel user = new UserModel
                     {
+                        UserID = Convert.ToInt32(dataReader["id"]),
                         Name = dataReader["name"].ToString(),
                         Email = dataReader["email"].ToString(),
                         Username = dataReader["username"].ToString(),
@@ -104,9 +105,7 @@ namespace UserPlatform.Classes.Database
                 return list;
             }
             else
-            {
                 return list;
-            }
         }
 
         public void CreateUser(UserModel user)
@@ -142,8 +141,121 @@ namespace UserPlatform.Classes.Database
                 return true;
             }
             else
-            {
                 return false;
+        }
+
+        public bool Login(string username, string Password)
+        {
+            string query = $"SELECT password FROM users WHERE username = '{username}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    string savedPasswordHash = dataReader["password"].ToString();
+                    byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
+
+                    PasswordHash pHash = new PasswordHash(hashBytes);
+
+                    return !pHash.Verify(Password) ? false : true;
+                }
+                return false;
+            }
+            else
+                return false;
+        }
+
+        public UserModel GetUserById(int id)
+        {
+            string query = $"SELECT * FROM users WHERE id={id}";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                UserModel user = new UserModel();
+                while (dataReader.Read())
+                {
+                    bool banned = false;
+                    if (Convert.ToByte(dataReader["banned"]) == 1)
+                        banned = true;
+
+                    user = new UserModel
+                    {
+                        UserID = Convert.ToInt32(dataReader["id"]),
+                        Name = dataReader["name"].ToString(),
+                        Email = dataReader["email"].ToString(),
+                        Username = dataReader["username"].ToString(),
+                        Password = dataReader["password"].ToString(),
+                        PhoneNumber = dataReader["phone_number"].ToString(),
+                        AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
+                        IsBanned = banned
+                    };
+                }
+                
+                dataReader.Close();
+                CloseConnection();
+
+                return user;
+            }
+            else
+                return null;
+        }
+
+        public UserModel GetUserByName(string name)
+        {
+            string query = $"SELECT * FROM users WHERE username='{name}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                UserModel user = new UserModel();
+                while (dataReader.Read())
+                {
+                    bool banned = false;
+                    if (Convert.ToByte(dataReader["banned"]) == 1)
+                        banned = true;
+
+                    user = new UserModel
+                    {
+                        UserID = Convert.ToInt32(dataReader["id"]),
+                        Name = dataReader["name"].ToString(),
+                        Email = dataReader["email"].ToString(),
+                        Username = dataReader["username"].ToString(),
+                        Password = dataReader["password"].ToString(),
+                        PhoneNumber = dataReader["phone_number"].ToString(),
+                        AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
+                        IsBanned = banned
+                    };
+                }
+                
+                
+                dataReader.Close();
+                CloseConnection();
+
+                return user;
+            }
+            else
+                return null;
+        }
+
+        public void UpdateUser(UserModel user)
+        {
+            string query = $"UPDATE users SET name='{user.Name}', email='{user.Email}', username='{user.Username}', phone_number='{user.PhoneNumber}', adminlevel={user.AdminLevel}, banned={user.IsBanned} WHERE id={user.UserID}";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                cmd.ExecuteNonQuery();
+
+                CloseConnection();
             }
         }
     }

@@ -1,53 +1,51 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
 using UserPlatform.Classes.Database;
+using UserPlatform.Classes;
 
 namespace UserPlatform.Models
 {
     public class UserModel
     {
-        public int userID { get; set; }
+        public int UserID { get; set; }
         public string Name { get; set; }
+        [Display(Name="Email Adress")]
         public string Email { get; set; }
         public string Username { get; set; }
         public string Password { get; set; }
 
+        [Display(Name="Phone Number")]
         public string PhoneNumber { get; set; }
+        [Display(Name="Admin Level")]
         public byte AdminLevel { get; set; } = 0;
+
+        [Display( Name="Banned")]
         public bool IsBanned { get; set; } = false;
 
         public List<UserModel> GetUsers() => new DBConnect("UserMySQL").GetAllUsers();
+        public UserModel GetUserById(int userId) => new DBConnect("UserMySQL").GetUserById(userId) ?? null;
+        public UserModel GetUser() => new DBConnect("UserMySQL").GetUserByName(Username) ?? null;
+        public void UpdateUser() => new DBConnect("UserMySQL").UpdateUser(this);
 
-        public bool CreateUser(UserModel user)
+        public bool CreateUser()
         {
             DBConnect dB = new DBConnect("UserMySQL");
 
-            if (dB.ValidUser(user))
+            if (dB.ValidUser(this))
             {
-                user.Password = HashPassword(user.Password);
-                dB.CreateUser(user);
+                PasswordHash pHash = new PasswordHash(Password);
+                byte[] hashBytes = pHash.ToArray();
+                Password = Convert.ToBase64String(hashBytes);
+                dB.CreateUser(this);
                 return true;
             }
             return false;
         }
 
-        //https://stackoverflow.com/questions/4181198/how-to-hash-a-password/10402129#10402129
-        private string HashPassword(string password)
-        {
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            return Convert.ToBase64String(hashBytes);
-        }
+        public bool Login() => new DBConnect("UserMySQL").Login(Username, Password);
     }
 }
