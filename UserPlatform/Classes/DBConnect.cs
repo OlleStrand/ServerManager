@@ -5,11 +5,11 @@ using System.Web;
 using MySql.Data;
 using MySql.Data.MySqlClient;
 using System.Configuration;
-using UserPlatform.Models;
-using UserPlatform.Classes;
+using ServerManager.Models;
+using ServerManager.Classes;
 using System.Globalization;
 
-namespace UserPlatform.Classes.Database
+namespace ServerManager.Classes.Database
 {
     public class DBConnect
     {

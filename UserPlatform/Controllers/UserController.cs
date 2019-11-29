@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Web.Mvc;
-using UserPlatform.Models;
+using ServerManager.Models;
 
-namespace UserPlatform.Controllers
+namespace ServerManager.Controllers
 {
     public class UserController : Controller
     {
@@ -25,6 +25,13 @@ namespace UserPlatform.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (user.Password == null)
+                {
+                    ModelState.AddModelError("password", "No Password");
+                    user.Password = string.Empty;
+                    return View(user);
+                }
+
                 if (user.Password.Length < 8)
                 {
                     ModelState.AddModelError("password", "Password too short! (Min 8 characters)");
@@ -70,6 +77,7 @@ namespace UserPlatform.Controllers
             {
                 user = user.GetUser();
                 Session["UserID"] = user.UserID;
+                Session["UserIsAdmin"] = user.AdminLevel > 0 ? "1" : "0";
                 return RedirectToAction("Dashboard");
             }
             else
@@ -77,6 +85,15 @@ namespace UserPlatform.Controllers
                 ModelState.AddModelError("noCredentials", "Wrong Password or Username!");
                 return View(user);
             }
+        }
+
+        [HttpPost]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            Session.Contents.RemoveAll();
+            System.Web.Security.FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult Dashboard() => View(new UserModel().GetUserById(Convert.ToInt32(Session["UserID"])));

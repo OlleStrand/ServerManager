@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace UserPlatform.Classes
+namespace ServerManager.Classes
 {
     public sealed class PasswordHash
     {

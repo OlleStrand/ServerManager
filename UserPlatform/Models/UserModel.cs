@@ -4,10 +4,10 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Web;
-using UserPlatform.Classes.Database;
-using UserPlatform.Classes;
+using ServerManager.Classes.Database;
+using ServerManager.Classes;
 
-namespace UserPlatform.Models
+namespace ServerManager.Models
 {
     public class UserModel
     {
