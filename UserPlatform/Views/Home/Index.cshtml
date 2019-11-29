@@ -1,23 +1,50 @@
 ﻿@{
     ViewBag.Title = "Home Page";
+    if (Session["UserID"] == null)
+    {
+
+    }
 }
 
-<div class="jumbotron">
-    <h1>Olle Strand Server Manager</h1>
-    <p class="lead">A Basic system to contol your servers from the web</p>
+<div class="jumbotron text-center bg-white">
+    <div class="container">
+        <h1 class="display-4">Hello</h1>
+        <p>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+            aute
+            irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+    </div>
+
+
+</div>
+<div class="container text-center">
+    <h2 class="display-4">What we do</h2>
+    <div class="row">
+        <div class="col-sm-6 px-5">
+            <h3>Servers</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <button type="button" class="btn btn-primary">Learn more</button>
+        </div>
+        <div class="col-sm-6 px-5">
+            <h3>Servers</h3>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+            </p>
+            <button type="button" class="btn btn-primary">Learn more</button>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            To use the system you´ll have to setup some variables in the configuration file!
-        </p>
-        <p>@Html.ActionLink(HttpUtility.HtmlDecode("How &raquo;"), "Index", "Setup", new { area = "" }, new { @class = "btn btn-default" })</p>
-    </div>
-    <div class="col-md-4">
-        <h2>Add Users</h2>
-        <p>This project focuses on helping you managing your community with a User System. Add them here!</p>
-        <p>@Html.ActionLink(HttpUtility.HtmlDecode("User Page &raquo;"), "CreateUser", "User", new { area = "" }, new { @class = "btn btn-default" })</p>
-    </div>
-</div>
+@section scripts {
+    <script type="text/javascript">
+        var Id = @Session["UserID"];
+        if (Id === 0) {
+            alert('Login to view this');
+        }
+    </script>
+}

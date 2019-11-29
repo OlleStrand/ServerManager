@@ -4,41 +4,57 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - Server Manager</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+    <script src="https://kit.fontawesome.com/5ce400bbf9.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("ServMang", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("User Page", "ListUsers", "User")</li>
-                </ul>
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
-        @RenderBody()
-        <hr />
-        <footer>
-            <p>&copy; @DateTime.Now.Year - Olle Strand</p>
-        </footer>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        @Html.ActionLink("Server Manager", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
+        <div class="collapse navbar-collapse" id="navbar">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">
+                    <div class="dropdown">
+                        @Html.ActionLink("Pricing", "Index", "Pricing", new { area = "" }, new { @class = "nav-link dropdown-toggle", id = "dropdownMenuLink", data_toggle = "dropdown", aria_hashpopup = "true", aria_expanded = "false" })
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                            @Html.ActionLink("Overview", "Index", "Pricing", new { area = "" }, new { @class = "dropdown-item" })
+                            <h6 class="dropdown-header">Available Plans</h6>
+                            @Html.ActionLink("Basic Plan", "Basic", "Pricing", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Professional Plan", "Professional", "Pricing", new { area = "" }, new { @class = "dropdown-item" })
+                            @Html.ActionLink("Business Plan", "Business", "Pricing", new { area = "" }, new { @class = "dropdown-item" })
+                        </div>
+                    </div>
+                </li>
+                <li class="nav-item">@Html.ActionLink("Dashboard", "Dashboard", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("About", "About", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Contact", "Contact", "Home", new { area = "" }, new { @class = "nav-link" })</li>
+            </ul>
+            <ul class="navbar-nav ml-auto px-4">
+                <li class="nav-item">@Html.ActionLink("Login", "Login", "User", new { area = "" }, new { @class = "nav-link" })</li>
+                <li class="nav-item">@Html.ActionLink("Admin", "ListUsers", "User", new { area = "" }, new { @class = "nav-link" })</li>
+            </ul>
+        </div>
+    </nav>
+
+    @RenderBody()
+    <hr />
+
+    <!-- Footer -->
+    <footer class="page-footer font-small special-color-dark pt-4">
+        <div class="footer-copyright text-center py-3">
+            © 2019 Olle Strand. All rights reserved.
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     @RenderSection("scripts", required: false)
 </body>
 </html>

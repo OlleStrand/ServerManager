@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Pricing";
+}
+
+<div class="d-flex justify-content-center m-5">
+    <div class="row">
+        <div class="card text-center my-5" style="width: 20rem;">
+            <div class="card-body">
+                <h3 class="card-title">Basic</h3>
+                <p class="card-text">
+                    <h5>$39.99 / Month</h5>
+                <p>Info here</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> 24/7 Online Support</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Cryptographic Hashing</li>
+                <li class="list-group-item text-danger"><i class="far fa-times-circle"></i> Unlimited Admin Accounts</li>
+                <li class="list-group-item text-danger"><i class="far fa-times-circle"></i> Unlimited Servers</li>
+            </ul>
+            <div class="card-body">
+                @Html.ActionLink("Contact Us", "Contct", "Home", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+                @Html.ActionLink("Learn More", "Basic", "Pricing", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+            </div>
+        </div>
+        <div class="card text-center" style="width: 23rem;">
+            <div class="card-body">
+                <h3 class="card-title">Business</h3>
+                <p class="card-text">
+                    <h5>$99.99 / Month</h5>
+                <p>Info here </p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> 24/7 Online Support</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Cryptographic Hashing</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Unlimited Admin Accounts</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Unlimited Servers</li>
+            </ul>
+            <div class="card-body">
+                @Html.ActionLink("Contact Us", "Contct", "Home", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+                @Html.ActionLink("Learn More", "Business", "Pricing", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+            </div>
+        </div>
+        <div class="card text-center my-5" style="width: 20rem;">
+            <div class="card-body">
+                <h3 class="card-title">Professional</h3>
+                <p class="card-text">
+                    <h5>$69.99 / Month</h5>
+                <p>Info here</p>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> 24/7 Online Support</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Cryptographic Hashing</li>
+                <li class="list-group-item text-success"><i class="far fa-check-circle"></i> Unlimited Admin Accounts</li>
+                <li class="list-group-item text-danger"><i class="far fa-times-circle"></i> Unlimited Servers</li>
+            </ul>
+            <div class="card-body">
+                @Html.ActionLink("Contact Us", "Contct", "Home", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+                @Html.ActionLink("Learn More", "Professional", "Pricing", new { area = "" }, new { @class = "btn btn-primary mx-1" })
+            </div>
+        </div>
+    </div>
+</div>
+
