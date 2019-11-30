@@ -12,6 +12,9 @@ namespace ServerManager.Controllers
 
         public ActionResult About() => View();
 
-        public ActionResult Contact => View();
+        public ActionResult Contact()
+        {
+            return View();
+        }
     }
 }

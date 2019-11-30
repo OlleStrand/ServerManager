@@ -94,7 +94,8 @@ namespace ServerManager.Classes.Database
                         Password = dataReader["password"].ToString(),
                         PhoneNumber = dataReader["phone_number"].ToString(),
                         AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
-                        IsBanned = banned
+                        IsBanned = banned,
+                        OwnerToken = dataReader["ownerToken"].ToString()
                     };
 
                     list.Add(user);
@@ -110,8 +111,7 @@ namespace ServerManager.Classes.Database
 
         public void CreateUser(UserModel user)
         {
-
-            string query = $"INSERT INTO users (name, email, username, password, phone_number) VALUES('{user.Name}', '{user.Email}', '{user.Username}', '{user.Password}', '{user.PhoneNumber}')";
+            string query = $"INSERT INTO users (name, email, username, password, phone_number, ownerToken) VALUES('{user.Name}', '{user.Email}', '{user.Username}', '{user.Password}', '{user.PhoneNumber}', '{user.OwnerToken}')";
 
             if (OpenConnection() == true)
             {
@@ -168,7 +168,7 @@ namespace ServerManager.Classes.Database
                 return false;
         }
 
-        public UserModel GetUserById(int id)
+        public UserModel GetUser(int id)
         {
             string query = $"SELECT * FROM users WHERE id={id}";
 
@@ -193,7 +193,8 @@ namespace ServerManager.Classes.Database
                         Password = dataReader["password"].ToString(),
                         PhoneNumber = dataReader["phone_number"].ToString(),
                         AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
-                        IsBanned = banned
+                        IsBanned = banned,
+                        OwnerToken = dataReader["ownerToken"].ToString()
                     };
                 }
                 
@@ -205,8 +206,7 @@ namespace ServerManager.Classes.Database
             else
                 return null;
         }
-
-        public UserModel GetUserByName(string name)
+        public UserModel GetUser(string name)
         {
             string query = $"SELECT * FROM users WHERE username='{name}'";
 
@@ -231,7 +231,8 @@ namespace ServerManager.Classes.Database
                         Password = dataReader["password"].ToString(),
                         PhoneNumber = dataReader["phone_number"].ToString(),
                         AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
-                        IsBanned = banned
+                        IsBanned = banned,
+                        OwnerToken = dataReader["ownerToken"].ToString()
                     };
                 }
                 
@@ -248,6 +249,20 @@ namespace ServerManager.Classes.Database
         public void UpdateUser(UserModel user)
         {
             string query = $"UPDATE users SET name='{user.Name}', email='{user.Email}', username='{user.Username}', phone_number='{user.PhoneNumber}', adminlevel={user.AdminLevel}, banned={user.IsBanned} WHERE id={user.UserID}";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                cmd.ExecuteNonQuery();
+
+                CloseConnection();
+            }
+        }
+
+        public void InsertNewOwnerToken(UserModel user)
+        {
+            string query = $"UPDATE users SET ownerToken='{user.OwnerToken}' WHERE id={user.UserID}";
 
             if (OpenConnection() == true)
             {

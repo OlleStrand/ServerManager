@@ -18,6 +18,12 @@ namespace ServerManager
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
+
+            routes.MapRoute(
+                name: "ServerPage",
+                url: "Server/Dashboard/{userId}/{serverToken}",
+                defaults: new { userId = UrlParameter.Optional, serverToken = UrlParameter.Optional }
+            );
         }
     }
 }
