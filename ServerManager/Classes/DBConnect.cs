@@ -194,7 +194,7 @@ namespace ServerManager.Classes.Database
                         PhoneNumber = dataReader["phone_number"].ToString(),
                         AdminLevel = Convert.ToByte(dataReader["adminlevel"]),
                         IsBanned = banned,
-                        OwnerToken = dataReader["ownerToken"].ToString()
+                        OwnerToken = dataReader["ownerToken"].ToString() ?? new UserModel().GenerateOwnerToken()
                     };
                 }
                 
@@ -272,6 +272,6 @@ namespace ServerManager.Classes.Database
 
                 CloseConnection();
             }
-        }
+    }
     }
 }

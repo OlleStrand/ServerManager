@@ -78,6 +78,10 @@ namespace ServerManager.Controllers
                 user = user.GetUser();
                 Session["UserID"] = user.UserID;
                 Session["UserIsAdmin"] = user.AdminLevel > 0 ? "1" : "0";
+
+                if (user.OwnerToken == "")
+                    user.InsertNewOwnerToken();
+
                 return RedirectToAction("Dashboard");
             }
             else
