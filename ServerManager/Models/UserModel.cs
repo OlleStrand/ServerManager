@@ -30,10 +30,20 @@ namespace ServerManager.Models
         [Display(Name = "Banned")]
         public bool IsBanned { get; set; } = false;
 
+        public List<ServerModel> OwnedServers { get; set; }
+        public int ServerAmount { get; set; }
+        public int MaxServers { get; set; }
+
         public List<UserModel> GetUsers() => new DBConnect("UserMySQL").GetAllUsers();
         public UserModel GetUserById(int userId) => new DBConnect("UserMySQL").GetUser(userId) ?? null;
         public UserModel GetUser() => new DBConnect("UserMySQL").GetUser(Username) ?? null;
         public void UpdateUser() => new DBConnect("UserMySQL").UpdateUser(this);
+
+        public UserModel()
+        {
+            if (OwnedServers != null)
+                ServerAmount = OwnedServers.Count;
+        }
 
         public bool CreateUser()
         {
@@ -57,6 +67,12 @@ namespace ServerManager.Models
             DBConnect dB = new DBConnect("UserMySQL");
             OwnerToken = GenerateOwnerToken();
             dB.InsertNewOwnerToken(this);
+        }
+
+        public void GetUserServers()
+        {
+            OwnedServers = new DBConnect("UserMySQL").GetUserServers(this);
+            ServerAmount = OwnedServers.Count;
         }
 
         public string GenerateOwnerToken(int length = ownerTokenLength)

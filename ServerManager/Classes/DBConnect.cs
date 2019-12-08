@@ -109,6 +109,39 @@ namespace ServerManager.Classes.Database
                 return list;
         }
 
+        public List<ServerModel> GetUserServers(UserModel user)
+        {
+            string query = $"SELECT * FROM servers WHERE ownerToken = '{user.OwnerToken}'";
+            List<ServerModel> list = new List<ServerModel>();
+
+            if (user.OwnerToken == "" || user.OwnerToken == null)
+                return list;
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    ServerModel server = new ServerModel
+                    {
+                        ServerID = Convert.ToInt32(dataReader["serverId"]),
+                        ServerToken = dataReader["serverToken"].ToString(),
+                        ServerName = dataReader["name"].ToString()
+                    };
+
+                    list.Add(server);
+                }
+                dataReader.Close();
+                CloseConnection();
+
+                return list;
+            }
+            else
+                return list;
+        }
+
         public void CreateUser(UserModel user)
         {
             string query = $"INSERT INTO users (name, email, username, password, phone_number, ownerToken) VALUES('{user.Name}', '{user.Email}', '{user.Username}', '{user.Password}', '{user.PhoneNumber}', '{user.OwnerToken}')";

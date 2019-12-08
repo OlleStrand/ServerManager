@@ -9,6 +9,7 @@ namespace ServerManager.Controllers
         // GET: User
         public ActionResult Index() => View();
         public ActionResult ListUsers() => View(new UserModel().GetUsers());
+        public ActionResult Admin() => View(new UserModel().GetUsers());
 
         public ActionResult Edit(int Id) => View(new UserModel().GetUserById(Id));
         [HttpPost]
@@ -101,5 +102,7 @@ namespace ServerManager.Controllers
         }
 
         public ActionResult Dashboard() => View(new UserModel().GetUserById(Convert.ToInt32(Session["UserID"])));
+
+        
     }
 }
