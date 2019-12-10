@@ -31,7 +31,10 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.buttonGetHWID = new System.Windows.Forms.Button();
+            this.labelHWID = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
+            this.tabPage1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl1
@@ -47,6 +50,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.labelHWID);
+            this.tabPage1.Controls.Add(this.buttonGetHWID);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
@@ -65,6 +70,25 @@
             this.tabPage2.Text = "Server Panel";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
+            // buttonGetHWID
+            // 
+            this.buttonGetHWID.Location = new System.Drawing.Point(8, 6);
+            this.buttonGetHWID.Name = "buttonGetHWID";
+            this.buttonGetHWID.Size = new System.Drawing.Size(75, 23);
+            this.buttonGetHWID.TabIndex = 0;
+            this.buttonGetHWID.Text = "Get HWID";
+            this.buttonGetHWID.UseVisualStyleBackColor = true;
+            this.buttonGetHWID.Click += new System.EventHandler(this.ButtonGetHWID_ClickAsync);
+            // 
+            // labelHWID
+            // 
+            this.labelHWID.AutoSize = true;
+            this.labelHWID.Location = new System.Drawing.Point(89, 11);
+            this.labelHWID.Name = "labelHWID";
+            this.labelHWID.Size = new System.Drawing.Size(67, 13);
+            this.labelHWID.TabIndex = 1;
+            this.labelHWID.Text = "Hardware ID";
+            // 
             // MainWindow
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -76,16 +100,19 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "ServerManager Client";
             this.tabControl1.ResumeLayout(false);
+            this.tabPage1.ResumeLayout(false);
+            this.tabPage1.PerformLayout();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ToolStripContainer toolStripContainer1;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.Label labelHWID;
+        private System.Windows.Forms.Button buttonGetHWID;
     }
 }
 

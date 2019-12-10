@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using MySql.Data.MySqlClient;
 using System.Configuration;
+using System.ComponentModel;
+using ServerManagerClient.Classes;
 
 namespace ServerManagerClient.Classes.Database
 {
@@ -64,6 +66,84 @@ namespace ServerManagerClient.Classes.Database
          *  METHODS FOR GETTING DATA
          */
 
+        public void UpdateSerialKey(string key, string hwid)
+        {
+            string query = $"UPDATE authentication SET activated=1, hwid='{hwid}' WHERE serialKey='{key}'";
 
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+
+                cmd.ExecuteNonQuery();
+
+                CloseConnection();
+            }
+        }
+
+        public bool IsSerialKeyActivated(string key)
+        {
+            string query = $"SELECT * FROM authentication WHERE serialKey='{key}' AND activated=0";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    return false;
+                }
+                dataReader.Close();
+                CloseConnection();
+                return true;
+            }
+            else
+                return false;
+        }
+
+        public bool IsSerialKeyInDB(string key)
+        {
+            string query = $"SELECT * FROM authentication WHERE serialKey='{key}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    return true;
+                }
+                dataReader.Close();
+                CloseConnection();
+                return false;
+            }
+            else
+                return false;
+        }
+
+        public bool Login(string Username, string Password)
+        {
+            string query = $"SELECT password FROM users WHERE username = '{Username}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    string savedPasswordHash = dataReader["password"].ToString();
+                    byte[] hashBytes = Convert.FromBase64String(savedPasswordHash);
+
+                    Authentication.PasswordHash pHash = new Authentication.PasswordHash(hashBytes);
+
+                    return !pHash.Verify(Password) ? false : true;
+                }
+                return false;
+            }
+            else
+                return false;
+        }
     }
 }

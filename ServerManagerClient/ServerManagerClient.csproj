@@ -54,6 +54,18 @@
     <Compile Include="Classes\Authentication.cs" />
     <Compile Include="Classes\DBConnect.cs" />
     <Compile Include="Classes\Server.cs" />
+    <Compile Include="LicenseWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LicenseWindow.Designer.cs">
+      <DependentUpon>LicenseWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="LoginWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="LoginWindow.Designer.cs">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="MainWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -62,6 +74,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="LicenseWindow.resx">
+      <DependentUpon>LicenseWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="LoginWindow.resx">
+      <DependentUpon>LoginWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainWindow.resx">
       <DependentUpon>MainWindow.cs</DependentUpon>
     </EmbeddedResource>

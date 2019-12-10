@@ -34,5 +34,10 @@ namespace ServerManagerClient
             //Get SPID from DB
             _server.StopServer(_SPID);
         }
+
+        private async void ButtonGetHWID_ClickAsync(object sender, EventArgs e)
+        {
+            labelHWID.Text = await Authentication.GetHWID();
+        }
     }
 }

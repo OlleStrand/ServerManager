@@ -239,6 +239,7 @@ namespace ServerManager.Classes.Database
             else
                 return null;
         }
+
         public UserModel GetUser(string name)
         {
             string query = $"SELECT * FROM users WHERE username='{name}'";
@@ -305,6 +306,6 @@ namespace ServerManager.Classes.Database
 
                 CloseConnection();
             }
-    }
+        }
     }
 }

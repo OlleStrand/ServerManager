@@ -57,4 +57,9 @@ namespace ServerManagerClient.Classes
             proc.Kill();
         }
     }
+
+    sealed class ServerHandler
+    {
+        //Statisk klass som ska hantera flera Server klasser
+    }
 }
