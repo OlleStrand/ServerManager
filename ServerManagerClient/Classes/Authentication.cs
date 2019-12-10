@@ -53,7 +53,7 @@ namespace ServerManagerClient.Classes
                         IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null))
                     {
                         using (IsolatedStorageFileStream isolatedStorageFileStream = 
-                            new IsolatedStorageFileStream($"{Username}Settings.txt", System.IO.FileMode.CreateNew, isolatedStorageFile))
+                            new IsolatedStorageFileStream($"{Username}Settings.txt", System.IO.FileMode.Create, isolatedStorageFile))
                         {
                             using (System.IO.StreamWriter streamWriter = new System.IO.StreamWriter(isolatedStorageFileStream))
                             {
