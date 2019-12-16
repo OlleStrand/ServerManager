@@ -33,9 +33,13 @@ namespace ServerManagerClient
                         {
                             if (streamReader.ReadLine() == "true")
                             {
+                                Authentication.User.Username = streamReader.ReadLine();
                                 //GOTO LicenseWindow
                                 LicenseWindow lw = new LicenseWindow();
-                                lw.Show();
+                                Hide();
+                                lw.ShowDialog();
+
+                                Close();
                             }
                         }
                     }
@@ -59,7 +63,7 @@ namespace ServerManagerClient
             {
                 MessageBox.Show("You successfully logged in", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                Authentication.Username = textBoxUsername.Text;
+                Authentication.User.Username = textBoxUsername.Text;
                 Authentication.SignedIn = true;
 
                 if (checkBoxRemember.Checked)
@@ -72,7 +76,8 @@ namespace ServerManagerClient
                         {
                             using (System.IO.StreamWriter streamWriter = new System.IO.StreamWriter(isolatedStorageFileStream))
                             {
-                                streamWriter.WriteLine(true);
+                                streamWriter.WriteLine("true");
+                                streamWriter.WriteLine(Authentication.User.Username);
                             }
                         }
                     }
@@ -86,7 +91,7 @@ namespace ServerManagerClient
                         {
                             using (System.IO.StreamWriter streamWriter = new System.IO.StreamWriter(isolatedStorageFileStream))
                             {
-                                streamWriter.WriteLine(false);
+                                streamWriter.WriteLine("false");
                             }
                         }
                     }

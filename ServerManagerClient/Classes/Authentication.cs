@@ -9,6 +9,7 @@ using System.Security.Cryptography;
 using ServerManagerClient.Classes.Database;
 using System.Windows.Forms;
 using System.IO.IsolatedStorage;
+using System.Diagnostics;
 
 namespace ServerManagerClient.Classes
 {
@@ -16,8 +17,17 @@ namespace ServerManagerClient.Classes
     {
         private static bool Activated { get; set; }
 
-        public static bool SignedIn { get; set; } = true;
-        public static string Username { get; set; }
+        public struct User
+        {
+            public static string Name { get; set; }
+            public static string Email { get; set; }
+            public static string Username { get; set; }
+            public static byte AdminLevel { get; set; }
+            public static string OwnerToken { get; set; }
+            public static string License { get; set; }
+        }
+        public static bool SignedIn { get; set; }
+        
 
         public static async Task<string> GetHWID()
         {
@@ -53,7 +63,7 @@ namespace ServerManagerClient.Classes
                         IsolatedStorageFile.GetStore(IsolatedStorageScope.User | IsolatedStorageScope.Assembly, null, null))
                     {
                         using (IsolatedStorageFileStream isolatedStorageFileStream = 
-                            new IsolatedStorageFileStream($"{Username}Settings.txt", System.IO.FileMode.Create, isolatedStorageFile))
+                            new IsolatedStorageFileStream($"{User.Username}Settings.txt", System.IO.FileMode.Create, isolatedStorageFile))
                         {
                             using (System.IO.StreamWriter streamWriter = new System.IO.StreamWriter(isolatedStorageFileStream))
                             {
@@ -69,6 +79,11 @@ namespace ServerManagerClient.Classes
                 {
                     MessageBox.Show("Key is already activated", "Authentication", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     Activated = false;
+                    if (MessageBox.Show("Would you like to recover your license?", "Recover License", 
+                        MessageBoxButtons.YesNo, MessageBoxIcon.Asterisk) == DialogResult.Yes)
+                    {
+                        Process.Start("https://google.com"); //Reset License Link to user profile
+                    }
                     return false;
                 }
             } else

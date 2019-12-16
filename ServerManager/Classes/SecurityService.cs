@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Security.Cryptography;
+using System.Text;
 
 namespace ServerManager.Classes
 {
@@ -44,6 +45,28 @@ namespace ServerManager.Classes
                 if (test[i] != _hash[i])
                     return false;
             return true;
+        }
+    }
+
+    public sealed class Licensing
+    {
+        public string GenerateLicense()
+        {
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+            StringBuilder sb = new StringBuilder();
+
+            using (RNGCryptoServiceProvider rng = new RNGCryptoServiceProvider())
+            {
+                byte[] uintbuffer = new byte[sizeof(int)];
+
+                for (int i = 0; i < 4*5; i++)
+                {
+                    rng.GetBytes(uintbuffer);
+                    uint num = BitConverter.ToUInt32(uintbuffer, 0);
+                    sb.Append(chars[(int)(num % (uint)chars.Length)]);
+                }
+            }
+            return sb.ToString();
         }
     }
 }

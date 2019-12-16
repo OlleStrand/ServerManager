@@ -145,5 +145,26 @@ namespace ServerManagerClient.Classes.Database
             else
                 return false;
         }
+
+        public void GetUser(string Username)
+        {
+            string query = $"SELECT name, email, adminlevel, ownerToken FROM users WHERE username='{Username}'";
+
+            if (OpenConnection() == true)
+            {
+                MySqlCommand cmd = new MySqlCommand(query, _connection);
+                MySqlDataReader dataReader = cmd.ExecuteReader();
+
+                while (dataReader.Read())
+                {
+                    Authentication.User.Name = dataReader["name"].ToString();
+                    Authentication.User.Email = dataReader["email"].ToString();
+                    Authentication.User.AdminLevel = Convert.ToByte(dataReader["adminlevel"]);
+                    Authentication.User.OwnerToken = dataReader["ownerToken"].ToString();
+                }
+                dataReader.Close();
+                CloseConnection();
+            }
+        }
     }
 }

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using ServerManagerClient.Classes;
+using ServerManagerClient.Classes.Database;
 using System.Diagnostics;
 
 namespace ServerManagerClient
@@ -20,6 +21,8 @@ namespace ServerManagerClient
         public MainWindow()
         {
             InitializeComponent();
+
+            new DBConnect("UserMySQL").GetUser(Authentication.User.Username);
             _server = new Server();
         }
 
@@ -33,11 +36,6 @@ namespace ServerManagerClient
         {
             //Get SPID from DB
             _server.StopServer(_SPID);
-        }
-
-        private async void ButtonGetHWID_ClickAsync(object sender, EventArgs e)
-        {
-            labelHWID.Text = await Authentication.GetHWID();
         }
     }
 }
